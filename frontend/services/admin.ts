@@ -1,5 +1,5 @@
 import { api, apiBlob } from "./api";
-import type { AdminStats, AdminTeam, Announcement, Status, User } from "@/types";
+import type { AdminAccount, AdminStats, AdminTeam, Announcement, CheckIn, OutboxStats, Status, User } from "@/types";
 
 export const adminApi = {
   stats: () => api<AdminStats>("/admin/stats"),
@@ -9,6 +9,13 @@ export const adminApi = {
   addAnnouncement: (text: string) => api<Announcement>("/admin/announcements", "POST", { text }),
   deleteAnnouncement: (id: number) => api<void>(`/admin/announcements/${id}`, "DELETE"),
   setCapacity: (capacity: number) => api<AdminStats>("/admin/capacity", "PUT", { capacity }),
+  admins: () => api<AdminAccount[]>("/admin/admins"),
+  addAdmin: (name: string, email: string, password: string) => api<AdminAccount>("/admin/admins", "POST", { name, email, password }),
+  removeAdmin: (id: string) => api<void>(`/admin/admins/${id}`, "DELETE"),
+  checkIn: (code: string) => api<CheckIn>("/admin/checkin", "POST", { code }),
+  undoCheckIn: (ticket: string) => api<void>(`/admin/checkin/${ticket}`, "DELETE"),
+  outbox: () => api<OutboxStats>("/admin/outbox"),
+  retryOutbox: () => api<OutboxStats>("/admin/outbox/retry", "POST", {}),
   async downloadCsv() {
     const url = URL.createObjectURL(await apiBlob("/admin/export.csv"));
     Object.assign(document.createElement("a"), { href: url, download: "participants.csv" }).click();

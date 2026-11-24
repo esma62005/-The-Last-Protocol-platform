@@ -6,9 +6,9 @@ export const metadata = { title: "Schedule · The Last Protocol" };
 export default function Schedule() {
   return (
     <>
-      <SectionHeader tag="03 TIMELINE" title="Operation schedule" sub="Three phases. Zero sleep." />
+      <SectionHeader tag="03 TIMELINE" title="Operation schedule" sub="15–17 December 2026 · supervised hours 08:30 – 20:00." />
       <ScheduleTabs />
-      <PageNav prev={["/tracks", "Tracks"]} next={["/prizes", "Prizes"]} />
+      <PageNav prev={["/tracks", "Event"]} next={["/prizes", "Prizes"]} />
     </>
   );
 }

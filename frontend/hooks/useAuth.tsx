@@ -1,7 +1,7 @@
 "use client";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { tokenStore } from "@/services/api";
+import { csrfStore } from "@/services/api";
 import { authApi } from "@/services/auth";
 import type { RegisterPayload, User } from "@/types";
 
@@ -18,23 +18,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
-    if (!tokenStore.get()) { setUser(null); setLoading(false); return; }
-    try { setUser(await authApi.me()); } catch { tokenStore.clear(); setUser(null); }
+    try {
+      if (!csrfStore.get()) csrfStore.set((await authApi.session()).csrf_token); // after a reload: recover CSRF from the cookie session
+      setUser(await authApi.me());
+    } catch { csrfStore.clear(); setUser(null); }
     setLoading(false);
   }, []);
   useEffect(() => { refresh(); }, [refresh]);
 
   const login = async (email: string, pw: string) => {
     const t = await authApi.login(email, pw);
-    tokenStore.set(t.access_token);
+    csrfStore.set(t.csrf_token);
     await refresh();
     return t.role;
   };
   const register = async (d: RegisterPayload) => {
-    tokenStore.set((await authApi.register(d)).access_token);
+    csrfStore.set((await authApi.register(d)).csrf_token);
     await refresh();
   };
-  const logout = () => { tokenStore.clear(); setUser(null); };
+  const logout = () => { authApi.logout().catch(() => {}); csrfStore.clear(); setUser(null); };
 
   return <Ctx.Provider value={{ user, loading, login, register, logout, refresh }}>{children}</Ctx.Provider>;
 }

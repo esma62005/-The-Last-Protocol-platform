@@ -8,7 +8,7 @@ const PODIUM = [["2nd", "🥈", 150, 0.75], ["1st", "🥇", 230, 0.55], ["3rd", 
 export default function Prizes() {
   return (
     <>
-      <SectionHeader tag="04 REWARDS" title="Prizes" sub="Glory, gear and opportunities." />
+      <SectionHeader tag="04 REWARDS" title="Prizes" sub="Results are announced on Thursday 17 December. Prizes and certificates are handed over at the closing ceremony." />
       <div className="mb-12 flex items-end justify-center gap-3 sm:gap-5">
         {PODIUM.map(([p, m, h, d]) => {
           const first = p === "1st";
@@ -23,7 +23,7 @@ export default function Prizes() {
       </div>
       <Reveal>
         <div className={gridCls}>
-          {[["🎨", "Best UI/UX"], ["🛡️", "Best Security"], ["🤝", "Sponsor Picks"], ["📜", "Certificates for all"]].map(([i, t]) => (
+          {[["🏆", "Awards ceremony · Thu 17 Dec"], ["📜", "Certificates"], ["🤝", "Clubs Expo & networking"]].map(([i, t]) => (
             <Card key={t}><IconBox>{i}</IconBox><h3 className="font-bold text-gold">{t}</h3></Card>
           ))}
         </div>

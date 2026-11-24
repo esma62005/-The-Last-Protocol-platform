@@ -1,3 +1,4 @@
+import hmac
 import secrets
 import string
 from datetime import datetime, timedelta, timezone
@@ -8,6 +9,8 @@ import jwt
 from app.core.config import settings
 
 ALGO = "HS256"
+# bcrypt hash of a random string: used to burn the same time when the e-mail does not exist
+_DUMMY_HASH = bcrypt.hashpw(secrets.token_bytes(16), bcrypt.gensalt()).decode()
 
 
 def hash_password(pw: str) -> str:
@@ -15,16 +18,30 @@ def hash_password(pw: str) -> str:
 
 
 def verify_password(pw: str, hashed: str) -> bool:
-    return bcrypt.checkpw(pw.encode(), hashed.encode())
+    try:
+        return bcrypt.checkpw(pw.encode(), hashed.encode())
+    except ValueError:
+        return False
 
 
-def create_token(user_id: str, role: str) -> str:
+def burn_password_check(pw: str) -> None:
+    verify_password(pw, _DUMMY_HASH)
+
+
+def create_token(user_id: str, role: str) -> tuple[str, str]:
+    """Returns (jwt, csrf_token). The CSRF value is embedded in the JWT and must be echoed in X-CSRF-Token."""
+    csrf = secrets.token_urlsafe(24)
     exp = datetime.now(timezone.utc) + timedelta(minutes=settings.access_token_minutes)
-    return jwt.encode({"sub": user_id, "role": role, "exp": exp}, settings.secret_key, ALGO)
+    token = jwt.encode({"sub": user_id, "role": role, "csrf": csrf, "exp": exp}, settings.secret_key, ALGO)
+    return token, csrf
 
 
 def decode_token(token: str) -> dict:
     return jwt.decode(token, settings.secret_key, algorithms=[ALGO])
+
+
+def csrf_matches(claims: dict, header: str | None) -> bool:
+    return bool(header) and hmac.compare_digest(str(claims.get("csrf", "")), header)
 
 
 def new_code(prefix: str = "TLP") -> str:

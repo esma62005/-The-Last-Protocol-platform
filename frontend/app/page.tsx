@@ -1,22 +1,22 @@
 import Link from "next/link";
 import Countdown from "@/components/Countdown";
-import Logo from "@/components/Logo";
+import { EventLogo } from "@/components/Logo";
 import Reveal from "@/components/Reveal";
 import SeatsBar from "@/components/SeatsBar";
 import { Card, IconBox, LinkButton, gridCls } from "@/components/ui";
 
 const PAGES = [
-  ["/about", "🔍", "About", "The mission"],
-  ["/tracks", "🧭", "Tracks", "Choose your field"],
-  ["/schedule", "🗓", "Schedule", "48h timeline"],
+  ["/about", "🔍", "About", "The NOVA mission"],
+  ["/tracks", "🧭", "Event", "3 volets · deliverables"],
+  ["/schedule", "🗓", "Schedule", "08:30 – 20:00 · 3 days"],
   ["/prizes", "🏆", "Prizes", "The rewards"],
-  ["/faq", "❓", "FAQ", "Intel"],
+  ["/faq", "❓", "FAQ", "Good to know"],
 ];
-const TICKER = ["48 HOURS", "4 TRACKS", "ONE MISSION", "TLEMCEN 2026", "BUILD · PITCH · WIN", "CYWORK CLUB", "OPERATION TLP-2049", "ZERO SLEEP"];
+const TICKER = ["48 HOURS", "TEAMS OF 3 TO 5", "AI × CYBERSECURITY", "CITY OF NOVA · 2040", "THE LAST FILE · ESCAPE ROOM", "THE INNOVATION HUB", "15–17 DEC 2026", "TLEMCEN"];
 const PHASES = [
-  ["01", "Investigate", "Pick a real challenge, research it and define the problem worth solving."],
-  ["02", "Innovate", "Design a bold solution with mentors guiding every decision."],
-  ["03", "Build", "Ship a working MVP and pitch it in 5 minutes before the protocol closes."],
+  ["01", "Investigate", "Analyse the NOVA scenario, identify the needs and spot a real opportunity."],
+  ["02", "Innovate", "Choose your sector and design your own startup, with technical and entrepreneurial support."],
+  ["03", "Build", "Develop a functional MVP with AI and cybersecurity, then pitch it to the jury on Thursday 17."],
 ];
 
 const Row = ({ hidden }: { hidden?: boolean }) => (
@@ -34,13 +34,14 @@ export default function Home() {
         </div>
         <div className="hero-logo">
           <div className="hero-halo" /><div className="hero-ring r1" /><div className="hero-ring r2" /><div className="hero-scan" />
-          <Logo size={380} />
+          <EventLogo size={380} />
         </div>
-        <p className="mt-8 font-mono text-xs tracking-[.3em] text-gold">CYWORK CLUB PRESENTS · OPERATION TLP-2049</p>
+        <p className="mt-8 font-mono text-xs tracking-[.3em] text-gold">CYWORK — CYBERSECURITY &amp; WORKING PRESENTS</p>
         <h1 className="mt-2 text-[clamp(2.6rem,9vw,6rem)] font-bold leading-none tracking-tight">THE LAST<br /><span className="glitch text-rose" data-t="PROTOCOL">PROTOCOL</span></h1>
-        <p className="my-5 font-mono text-gold">&gt; 48 hours. one mission. a new future.<span className="animate-pulse">▌</span></p>
+        <p className="mb-1 mt-3 font-mono text-sm tracking-[.2em] text-gold/80">CYWORK STARTUP IN 48 HOURS · 2026</p>
+        <p className="my-4 font-mono text-gold">&gt; 48 hours. one mission. a new future.<span className="animate-pulse">▌</span></p>
         <div className="flex flex-wrap justify-center gap-2.5">
-          {["⏱ 48 Hours", "📍 Tlemcen · Venue TBA", "📅 19–21 Dec 2026"].map((c) => <span key={c} className="rounded-full border border-gold/20 bg-wine/20 px-4 py-1 text-sm backdrop-blur">{c}</span>)}
+          {["⏱ 48 Hours", "📍 Tlemcen · Central Library", "📅 15–17 Dec 2026"].map((c) => <span key={c} className="rounded-full border border-gold/20 bg-wine/20 px-4 py-1 text-sm backdrop-blur">{c}</span>)}
         </div>
         <Countdown />
         <div className="flex flex-wrap justify-center gap-3"><LinkButton href="/register" variant="primary">Register Now</LinkButton><LinkButton href="/about">Learn More</LinkButton></div>
@@ -76,8 +77,8 @@ export default function Home() {
         <div className="cta"><div className="cta-in">
           <p className="font-mono text-xs tracking-[.3em] text-gold">SEATS ARE LIMITED</p>
           <h2 className="my-3 text-3xl font-bold md:text-5xl">Ready to run the protocol?</h2>
-          <p className="mx-auto mb-7 max-w-md text-[#b9b2a5]">Register in four short steps and get your QR ticket instantly.</p>
-          <LinkButton href="/register" variant="primary">Join the operation</LinkButton>
+          <p className="mx-auto mb-7 max-w-md text-[#b9b2a5]">Register your team of 3 to 5 in three short steps. The decision reaches every member by Gmail and on the website.</p>
+          <LinkButton href="/register" variant="primary">Register your team</LinkButton>
         </div></div>
       </Reveal>
     </div>

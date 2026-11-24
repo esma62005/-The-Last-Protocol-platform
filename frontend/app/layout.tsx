@@ -12,7 +12,7 @@ import Transitions, { PageEnter } from "@/components/PageTransition";
 const sans = Space_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
-export const metadata: Metadata = { title: "The Last Protocol – CYWORK Hackathon 48H", description: "48h hackathon by CYWORK Club · Tlemcen" };
+export const metadata: Metadata = { title: "The Last Protocol – CYWORK Startup in 48 Hours", description: "Startup challenge by CYWORK · AI & Cybersecurity · Tlemcen · 15–17 December 2026" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <div><p className="font-bold tracking-[.12em] text-gold">CYWORK</p><p className="font-mono text-[11px] text-muted">THE LAST PROTOCOL · TLEMCEN</p></div>
               </div>
               <nav className="flex flex-wrap justify-center gap-5 font-mono text-xs text-muted">
-                {["about", "tracks", "schedule", "prizes", "faq", "register"].map((s) => <Link key={s} href={`/${s}`} className="uppercase tracking-widest transition hover:text-gold">{s}</Link>)}
+                {["about", "tracks", "schedule", "prizes", "faq", "register"].map((s) => <Link key={s} href={`/${s}`} className="uppercase tracking-widest transition hover:text-gold">{s === "tracks" ? "event" : s}</Link>)}
               </nav>
               <p className="font-mono text-xs text-muted">© 2026 CYWORK ARCHIVE · <span className="text-rose">CLASSIFIED</span></p>
             </div>

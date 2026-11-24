@@ -8,7 +8,8 @@ import { useNavigate } from "./PageTransition";
 import { LinkButton, cx } from "./ui";
 
 const PAGES = ["about", "tracks", "schedule", "prizes", "faq"];
-const label = (s: string) => (s === "faq" ? "FAQ" : s[0].toUpperCase() + s.slice(1));
+const LABELS: Record<string, string> = { faq: "FAQ", tracks: "Event" };
+const label = (s: string) => LABELS[s] ?? s[0].toUpperCase() + s.slice(1);
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -33,7 +34,7 @@ export default function Navbar() {
   const link = (href: string, text: string) => (
     <Link key={href} href={href} className={cx("nav-link", path === href ? "active" : "opacity-70")}>{text}</Link>
   );
-  const account: [string, string][] = user?.role === "admin" ? [["/admin", "Admin"]] : user ? [["/teams", "Team"], ["/dashboard", "Dashboard"]] : [["/login", "Login"]];
+  const account: [string, string][] = user?.role === "admin" ? [["/admin", "Admin"]] : user ? [["/dashboard", "Dashboard"]] : [["/login", "Login"]];
 
   return (
     <nav className={cx("fixed inset-x-0 top-0 z-30 border-b backdrop-blur-md transition-all duration-300", scrolled ? "border-gold/25 bg-ink/90 shadow-[0_10px_30px_-18px_rgba(0,0,0,.9)]" : "border-gold/10 bg-ink/60")}>

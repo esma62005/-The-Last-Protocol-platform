@@ -1,30 +1,29 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.deps import current_user
 from app.db.session import get_db
 from app.models import Team, User
-from app.schemas import TeamCreateIn, TeamJoinIn, TeamOut
-from app.services import teams as svc
+from app.schemas import SubmissionIn, TeamOut
 
 router = APIRouter(prefix="/teams", tags=["teams"])
 
 
+def _mine(db: Session, user: User) -> Team | None:
+    return db.scalar(select(Team).where(Team.leader_id == user.id))
+
+
 @router.get("/me", response_model=TeamOut | None)
-def my_team(user: User = Depends(current_user)) -> Team | None:
-    return user.team
+def my_team(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    return _mine(db, user)
 
 
-@router.post("", response_model=TeamOut, status_code=201)
-def create(data: TeamCreateIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
-    return svc.create_team(db, user, data.name)
-
-
-@router.post("/join", response_model=TeamOut)
-def join(data: TeamJoinIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
-    return svc.join_team(db, user, data.code)
-
-
-@router.post("/leave", status_code=204)
-def leave(user: User = Depends(current_user), db: Session = Depends(get_db)):
-    svc.leave_team(db, user)
+@router.put("/me/submission", response_model=TeamOut)
+def set_submission(data: SubmissionIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    team = _mine(db, user)
+    if not team:
+        raise HTTPException(404, "Team not found.")
+    team.submission_url = data.url.strip()
+    db.commit()
+    return team

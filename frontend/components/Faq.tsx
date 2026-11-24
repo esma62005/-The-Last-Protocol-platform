@@ -3,12 +3,16 @@ import { useState } from "react";
 import { cx, inputCls } from "./ui";
 
 const FAQ = [
-  ["Who can participate?", "Any student or young professional passionate about tech."],
-  ["Is participation free?", "Yes. Meals and workshops are included."],
-  ["Can I participate individually?", "Yes, and you can create or join a team after registering."],
-  ["Do I need programming experience?", "No. Designers and business profiles are welcome."],
-  ["What should I bring?", "Laptop, charger, student ID and your QR ticket."],
-  ["Can I modify my team after registration?", "Yes, until the hacking phase begins."],
+  ["Who can participate in the competition?", "Teams of 3 to 5 members with an advanced technical level. Every team designs a startup based on artificial intelligence and cybersecurity."],
+  ["Can I participate individually?", "No. The competition is team-based (3 to 5 members). Register your whole team at once: the leader creates the account and adds the other members' Gmail addresses."],
+  ["Why do you ask for the members' Gmail?", "The decision (accepted / not retained) is emailed to every member, and the leader sees it on the website dashboard. Members don't need an account."],
+  ["How will I know if we are accepted?", "By email on each member's Gmail and on the dashboard of your team (log in with the leader's email). The dashboard refreshes by itself."],
+  ["Which technologies are mandatory?", "Artificial intelligence and cybersecurity. Everything else — sector, product and solution — is your choice."],
+  ["When does the challenge start?", "On Tuesday 15 December 2026 with check-in at 08:30 and the opening ceremony at the Central Library. Activities run from 08:30 to 20:00 each day; rooms are closed at 20:00 and work resumes the next morning. Closing is on Thursday 17 December at 20:00."],
+  ["What is THE LAST FILE?", "An Escape Room in 5 stages (Evidence, Cipher, Pattern, Hidden File, Final Code), 20 to 30 minutes per session. Each team designates representatives."],
+  ["What is the Innovation Hub?", "Workshops (AI, Cybersecurity, Entrepreneurship, Prototype Development), Clubs Expo and networking at the Central Library on Wednesday 16 December. Open to students and visitors."],
+  ["What do we have to hand in?", "A startup file: Startup Profile, Problem Statement, Technical Architecture, AI Documentation, Security Documentation, Functional MVP, Business Model and Pitch Deck."],
+  ["What should I bring?", "Your laptop and charger, your student ID and the QR ticket from your dashboard."],
 ];
 
 export default function Faq() {

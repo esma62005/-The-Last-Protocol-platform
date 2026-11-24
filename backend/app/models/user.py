@@ -28,26 +28,25 @@ class User(Base):
     role: Mapped[Role] = mapped_column(Enum(Role), default=Role.participant)
     status: Mapped[Status] = mapped_column(Enum(Status), default=Status.pending, index=True)
 
-    # A · personal
-    phone: Mapped[str] = mapped_column(String(30), default="")
+    # A · team leader
     university: Mapped[str] = mapped_column(String(160), default="")
     field_of_study: Mapped[str] = mapped_column(String(120), default="")
     level: Mapped[str] = mapped_column(String(40), default="")
-    # B · technical
+    # B · technical (optional)
     skills: Mapped[str] = mapped_column(Text, default="")
     experience: Mapped[str] = mapped_column(String(20), default="Beginner")
     github: Mapped[str] = mapped_column(String(255), default="")
     portfolio: Mapped[str] = mapped_column(String(255), default="")
-    # C · participation
-    participation_type: Mapped[str] = mapped_column(String(20), default="Individual")
-    track: Mapped[str] = mapped_column(String(40), default="AI", index=True)
-    # D · additional
+    # C · optional extras
     motivation: Mapped[str] = mapped_column(Text, default="")
     previous_hackathons: Mapped[str] = mapped_column(String(255), default="")
     special_requirements: Mapped[str] = mapped_column(String(255), default="")
 
     submission_url: Mapped[str] = mapped_column(String(500), default="")
     team_id: Mapped[str | None] = mapped_column(ForeignKey("teams.id", ondelete="SET NULL"), nullable=True)
+    # event-day check-in (the ticket QR belongs to the team leader's account = the whole team)
+    checked_in_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    checked_in_by: Mapped[str | None] = mapped_column(String(16), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     team = relationship("Team", back_populates="members", foreign_keys=[team_id])
