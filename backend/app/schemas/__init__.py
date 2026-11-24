@@ -114,6 +114,16 @@ class PublicStats(BaseModel):
     capacity: int
     taken: int
 
+class PublicTeamStatusIn(BaseModel):
+    email: EmailStr
+    code: str = Field(min_length=1, max_length=16)
+
+
+class PublicTeamStatusOut(BaseModel):
+    team_name: str
+    code: str
+    members: list[str]
+    status: StatusT
 
 class StatusIn(BaseModel):
     status: StatusT

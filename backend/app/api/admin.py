@@ -165,10 +165,24 @@ def check_in(data: CheckInIn, me: User = Depends(admin_only), db: Session = Depe
         user.checked_in_at, user.checked_in_by = datetime.now(timezone.utc), me.id
         db.commit()
     members = user.team.member_emails if user.team else []
-    return CheckInOut(ticket=user.id, team_name=user.team.name if user.team else user.name, leader_name=user.name,
-                      size=1 + len(members), member_emails=members, status=user.status.value,
-                      checked_in_at=user.checked_in_at, already_checked_in=already)
 
+    checked_at = user.checked_in_at
+
+    # SQLite may return a naive datetime after reading it from the database.
+    # Treat stored naive timestamps as UTC.
+    if checked_at and checked_at.tzinfo is None:
+        checked_at = checked_at.replace(tzinfo=timezone.utc)
+
+    return CheckInOut(
+        ticket=user.id,
+        team_name=user.team.name if user.team else user.name,
+        leader_name=user.name,
+        size=1 + len(members),
+        member_emails=members,
+        status=user.status.value,
+        checked_in_at=checked_at,
+        already_checked_in=already,
+    )
 
 @router.delete("/checkin/{ticket}", status_code=204)
 def undo_check_in(ticket: str, db: Session = Depends(get_db)):

@@ -1,5 +1,10 @@
 export type Status = "pending" | "accepted" | "rejected";
-
+export interface TeamStatus {
+  team_name: string;
+  code: string;
+  members: string[];
+  status: Status;
+}
 export interface Team { id: string; name: string; lead_id: string | null; member_emails: string[] }
 export interface User {
   id: string; name: string; email: string; role: "participant" | "admin"; status: Status;
